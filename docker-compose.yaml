@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: next-auth-mysql-mysql
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  nextjs:
+    container_name: next-auth-mysql-nextjs
+    ports:
+      - '3000:3000'
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+volumes:
+  mysql: ~

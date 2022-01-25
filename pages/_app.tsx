@@ -1,8 +1,35 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import React, {FC} from 'react';
+import {AppProps} from 'next/app';
+import {SessionProvider, useSession} from 'next-auth/react'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+const App: FC<AppProps> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
+  return (
+    <SessionProvider session={session}>
+      {Component.auth ? (
+        <Auth>
+          <Component {...pageProps} />
+        </Auth>
+      ) : (
+        <Component {...pageProps} />
+      )}
+    </SessionProvider>
+  )
 }
 
-export default MyApp
+const Auth: React.FC<{}> = ({ children }) => {
+  const { data: session, status } = useSession({required: true})
+  const isUser = !!session?.user
+
+  if (isUser) {
+    return <div>{children}</div>
+  }
+
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <div>Loading...</div>
+}
+
+export default App
