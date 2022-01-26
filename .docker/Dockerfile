@@ -1,29 +1,24 @@
-FROM node:16.13.2
+FROM node:lts as dependencies
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN npx browserslist@latest --update-db && yarn install --frozen-lockfile
 
-USER node
-
-###########################
-# Var
-###########################
-
-ARG BASE_API_URL=""
-
-ENV BASE_API_URL=${BASE_API_URL}
-
-##########################
-# END
-##########################
-
-RUN mkdir -p '/home/node/app'
-
-WORKDIR '/home/node/app'
-
-COPY --chown=node:node package*.json ./
-
-COPY --chown=node:node . .
-
-RUN npx browserslist@latest --update-db && yarn install
-
+FROM node:lts as builder
+WORKDIR /app
+COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+RUN yarn prisma-g
 RUN yarn build
 
-CMD yarn start
+FROM node:lts as runner
+WORKDIR /app
+ENV NODE_ENV production
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+EXPOSE 3000
+CMD ["yarn", "start"]
