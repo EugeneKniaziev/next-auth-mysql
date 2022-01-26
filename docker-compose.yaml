@@ -15,15 +15,18 @@ services:
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   nextjs:
     container_name: next-auth-mysql-nextjs
+    depends_on:
+      - mysql
     ports:
       - '3000:3000'
     build:
       context: ./
-      dockerfile: ./.docker/Dockerfile
+      dockerfile: ./Dockerfile
     volumes:
-      - .:/app
+      - ./:/app
       - /app/node_modules
       - /app/.next
+      - /app/prisma
 
 volumes:
   mysql: ~

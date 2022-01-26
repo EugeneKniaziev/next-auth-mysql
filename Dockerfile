@@ -1,13 +1,14 @@
 FROM node:lts as dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
+COPY ./prisma ./prisma
 RUN npx browserslist@latest --update-db && yarn install --frozen-lockfile
+RUN yarn prisma generate
 
 FROM node:lts as builder
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
-RUN yarn prisma-g
 RUN yarn build
 
 FROM node:lts as runner

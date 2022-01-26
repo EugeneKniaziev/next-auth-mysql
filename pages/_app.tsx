@@ -8,13 +8,9 @@ const App: FC<AppProps> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      {Component.auth ? (
-        <Auth>
-          <Component {...pageProps} />
-        </Auth>
-      ) : (
+      <SessionProvider session={session}>
         <Component {...pageProps} />
-      )}
+      </SessionProvider>
     </SessionProvider>
   )
 }
