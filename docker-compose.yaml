@@ -24,9 +24,9 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./:/app
-      - /app/node_modules
-      - /app/.next
-      - /app/prisma
+    command: yarn dev
 
+# Volumes setup.
 volumes:
-  mysql: ~
+  mysql:
+    driver: "local"
