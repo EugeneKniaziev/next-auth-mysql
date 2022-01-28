@@ -1,23 +1,25 @@
-import type { NextPage } from 'next'
-import { useSession, signIn, signOut } from "next-auth/react"
-
+import type { NextPage } from 'next';
+import { useSession, signIn, signOut, getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
-  const { data: session } = useSession()
-  if (session) {
+  const { data: session, status } = useSession();
+
+  if (status === 'authenticated') {
     return (
       <>
-        Signed in as {session.user?.email} <br />
+        Signed in as <br />
+        {status} <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
-    )
+    );
   }
   return (
     <>
       Not signed in <br />
+      {status} <br />
       <button onClick={() => signIn()}>Sign in</button>
     </>
-  )
-}
-
-export default Home
+  );
+};
+export default Home;
