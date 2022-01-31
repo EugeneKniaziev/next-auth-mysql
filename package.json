@@ -2,12 +2,10 @@
   "name": "next-auth-mysql",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npx browserslist@latest --update-db && yarn && prisma generate && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prisma-m": "prisma migrate dev",
-    "prisma-g": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.1",

@@ -23,7 +23,7 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./:/app
+      - ./:/home/node/app/
     command: yarn dev
 
 # Volumes setup.
