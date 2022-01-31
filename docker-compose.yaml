@@ -2,6 +2,7 @@ version: '3.7'
 services:
   mysql:
     image: mysql:5.7
+    restart: always
     container_name: next-auth-mysql-mysql
     environment:
       - MYSQL_DATABASE=${DB_NAME}
@@ -10,6 +11,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     ports:
       - 3306:3306
+    expose:
+      - 3306
     volumes:
       - mysql:/var/lib/mysql
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
