@@ -1,5 +1,15 @@
 version: '3.7'
 services:
+  # postgres:
+  #   image: postgres:13
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=${DB_USER}
+  #     - POSTGRES_PASSWORD=${DB_PASSWORD}
+  #   volumes:
+  #     - postgres:/var/lib/postgresql/data
+  #   ports:
+  #     - '5432:5432'
   mysql:
     image: mysql:5.7
     restart: always
@@ -16,20 +26,22 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-  nextjs:
-    container_name: next-auth-mysql-nextjs
-    depends_on:
-      - mysql
-    ports:
-      - '3000:3000'
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./:/home/node/app/
-    command: yarn dev
+  # nextjs:
+  #   container_name: next-auth-mysql-nextjs
+  #   depends_on:
+  #     - mysql
+  #     - postgres
+  #   ports:
+  #     - '3000:3000'
+  #   build:
+  #     context: ./
+  #     dockerfile: ./Dockerfile
+  #   volumes:
+  #     - ./:/home/node/app/
+  #   command: yarn dev
 
 # Volumes setup.
 volumes:
   mysql:
     driver: "local"
+  postgres: ~
