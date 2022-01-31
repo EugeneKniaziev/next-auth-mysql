@@ -1,12 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is an example project for full-stack development based on the
+- [Next.js](https://nextjs.org/)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Prisma](https://www.prisma.io/)
+- [MySQL](https://www.mysql.com/) or [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
+
+
 
 ## Getting Started
 
-First, run the development server:
+First, run the docker-compose to start the server:
 
 ```bash
-npm run dev
-# or
+docker-compose up --build
+# and in the separate terminal, run
+yarn dev
+```
+
+## Database ORM
+
+To interuct with database we use [Prisma](https://www.prisma.io/).
+
+First of all, take a look at the documentation of base functionality.
+
+### DB scheme
+
+To change the DB structure you can edit the file `prisma/scheme.prisma`
+
+### DB init
+
+To generate database with structure declared in `scheme.prisma`, run:
+
+```bash
+yarn prisma db init
+
+```
+
+### Migration
+
+To make migration:
+
+```bash
+yarn prisma migration
+# and in the separate terminal, run
 yarn dev
 ```
 
