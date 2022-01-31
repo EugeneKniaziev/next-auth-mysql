@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 const options = {
-  secret: 'SampleSecretCode',
+  secret: 'secretkey',
   // When adapter is on - session doesn`t return user
   // adapter: PrismaAdapter(prisma),
   debug: true,
