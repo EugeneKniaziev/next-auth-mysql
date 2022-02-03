@@ -1,9 +1,12 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { hash } from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
+// import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { NextApiRequest, NextApiResponse } from 'next';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const options = {
@@ -12,6 +15,17 @@ const options = {
   // adapter: PrismaAdapter(prisma),
   debug: true,
   providers: [
+    // EmailProvider({
+    //   server: {
+    //     host: process.env.EMAIL_SERVER_HOST,
+    //     port: process.env.EMAIL_SERVER_PORT,
+    //     auth: {
+    //       user: process.env.EMAIL_SERVER_USER,
+    //       pass: process.env.EMAIL_SERVER_PASSWORD
+    //     }
+    //   },
+    //   from: process.env.EMAIL_FROM
+    // }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',
