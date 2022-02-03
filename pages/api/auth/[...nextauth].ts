@@ -1,13 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { hash } from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
 // import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from 'next-auth/providers/credentials';
 // import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const options = {
-  secret: 'secretkey',
+  secret: process.env.SECRET,
   // When adapter is on - session doesn`t return user
   // adapter: PrismaAdapter(prisma),
   debug: true,
@@ -47,8 +49,10 @@ const options = {
         // We can throw errors if user exist or return user itself
         // Returning registeredUser
         if (registeredUser) return registeredUser;
-
         try {
+          const hashed = await hash(data?.password, 10).then(
+            (hasedPass) => (data.password = hasedPass)
+          );
           const user = await prisma.user.create({ data });
           // New user successfully created
           return user;
